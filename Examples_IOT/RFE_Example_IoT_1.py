@@ -35,7 +35,9 @@ def PrintPeak(objAnalazyer):
 #---------------------------------------------------------
 
 SERIALPORT = None    #serial port data 
-BAUDRATE = 500000
+
+# No. of symbol cahnge per second
+BAUDRATE = 500000	
 
 objRFE = RFExplorer.RFECommunicator()     #Initialize object and thread
 TOTAL_SECONDS = 10           #Initialize time span to display activity
@@ -46,14 +48,18 @@ TOTAL_SECONDS = 10           #Initialize time span to display activity
 
 try:
     #Find and show valid serial ports
+    # TRUE if found valid ports
     objRFE.GetConnectedPorts()    
 
     #Reset IoT board GPIO2 to High Level and GPIO3 to High Level
+    # TRUE if baudrate = 500000bps and false if 2400bps
     objRFE.ResetIOT_HW(True)
 
     #Connect to available port
+    # TRUE if port is available
     if (objRFE.ConnectPort(SERIALPORT, BAUDRATE)):     
         #Wait for unit to notify reset completed
+	# When check is done properly, it is automatically set to FALSE
         while(objRFE.IsResetEvent):
             pass
         #Wait for unit to stabilize
